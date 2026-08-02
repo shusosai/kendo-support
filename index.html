@@ -1,66 +1,883 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-<style>
-body {
-  margin: 0;
-  padding: 20px;
-  color: white;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="剣道アプリ『剣の道 零』の機能紹介、更新履歴、お問い合わせ窓口をご案内します。">
+  <meta name="theme-color" content="#09130f">
+  <title>剣の道 零｜サポート</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --page-width: 1100px;
+      --paper: rgba(10, 20, 15, 0.64);
+      --paper-strong: rgba(7, 15, 11, 0.76);
+      --line: rgba(255, 255, 255, 0.14);
+      --text: #f7f4ea;
+      --muted: #d2d5ce;
+      --gold: #d9bb72;
+      --gold-light: #f2dfaa;
+      --green: #89b99a;
+      --shadow: 0 18px 55px rgba(0, 0, 0, 0.34);
+    }
 
-  background-image: url("画像.png");
-  background-size: cover;
-  background-position: left top;
-  background-repeat: no-repeat;
-}
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
-  z-index: -1;
-}
-</style>
-<meta charset="UTF-8">
-<title>剣の道 零 サポート</title>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic UI", sans-serif;
+      line-height: 1.8;
+      background-color: #09130f;
+      background-image:
+        linear-gradient(180deg, rgba(3, 8, 5, 0.16), rgba(3, 8, 5, 0.44)),
+        url("画像.png");
+      background-position: left top;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    a {
+      color: var(--gold-light);
+    }
+
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid var(--gold-light);
+      outline-offset: 4px;
+      border-radius: 8px;
+    }
+
+    .site-header,
+    main,
+    footer {
+      width: min(calc(100% - 32px), var(--page-width));
+      margin-inline: auto;
+    }
+
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding-block: 22px;
+    }
+
+    .brand {
+      color: var(--text);
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px 20px;
+      font-size: 0.9rem;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    nav a:hover {
+      color: var(--text);
+    }
+
+    main {
+      display: grid;
+      gap: 28px;
+      padding-bottom: 28px;
+    }
+
+    .panel {
+      padding: clamp(24px, 5vw, 56px);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+    }
+
+    .hero {
+      min-height: 520px;
+      display: grid;
+      align-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -80px;
+      bottom: -110px;
+      width: 310px;
+      aspect-ratio: 1;
+      border: 1px solid rgba(217, 187, 114, 0.24);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 30px rgba(217, 187, 114, 0.05),
+        0 0 0 62px rgba(217, 187, 114, 0.03);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--gold-light);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .version-badge {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 26px;
+      padding: 7px 13px;
+      border: 1px solid rgba(217, 187, 114, 0.45);
+      border-radius: 999px;
+      color: var(--gold-light);
+      background: rgba(217, 187, 114, 0.09);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .version-badge::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 12px var(--gold);
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin-top: 0;
+      line-height: 1.35;
+    }
+
+    h1,
+    h2 {
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin-bottom: 18px;
+      font-size: clamp(2.5rem, 8vw, 5.4rem);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+    }
+
+    h1 span {
+      display: block;
+      margin-top: 12px;
+      color: var(--gold-light);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif;
+      font-size: clamp(1rem, 2.6vw, 1.3rem);
+      font-weight: 600;
+      letter-spacing: 0.15em;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+      font-size: clamp(1.75rem, 5vw, 2.6rem);
+      letter-spacing: 0.08em;
+    }
+
+    h3 {
+      margin-bottom: 8px;
+      font-size: 1.05rem;
+    }
+
+    p {
+      margin-block: 0 1em;
+    }
+
+    .hero-copy {
+      max-width: 680px;
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.12rem);
+    }
+
+    .hero-copy strong {
+      color: var(--text);
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 11px 20px;
+      border: 1px solid var(--gold);
+      border-radius: 999px;
+      color: #172016;
+      background: var(--gold-light);
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 160ms ease, background-color 160ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      background: #fff0c4;
+    }
+
+    .button.secondary {
+      color: var(--text);
+      background: transparent;
+    }
+
+    .section-intro {
+      max-width: 760px;
+      margin-bottom: 28px;
+      color: var(--muted);
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      min-height: 180px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .card-number {
+      display: inline-block;
+      margin-bottom: 16px;
+      color: var(--gold);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+    }
+
+    .card p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .about-grid article {
+      padding-top: 18px;
+      border-top: 1px solid rgba(217, 187, 114, 0.42);
+    }
+
+    .about-grid p {
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .release-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .release {
+      display: grid;
+      grid-template-columns: 105px 1fr;
+      gap: 22px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .release.latest {
+      border-color: rgba(217, 187, 114, 0.55);
+      background: linear-gradient(135deg, rgba(217, 187, 114, 0.12), rgba(255, 255, 255, 0.025));
+    }
+
+    .release-version {
+      color: var(--gold-light);
+      font-size: 1.12rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+
+    .release-version small {
+      display: block;
+      margin-top: 5px;
+      color: var(--green);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+    }
+
+    .release ul {
+      margin: 0;
+      padding-left: 1.25em;
+      color: var(--muted);
+    }
+
+    .release li + li {
+      margin-top: 5px;
+    }
+
+    details {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    summary {
+      padding: 18px 4px;
+      color: var(--gold-light);
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    details .release-list {
+      padding-bottom: 18px;
+    }
+
+    .faq-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .faq-list details {
+      padding-inline: 20px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(4, 12, 8, 0.32);
+    }
+
+    .faq-list summary {
+      color: var(--text);
+    }
+
+    .faq-answer {
+      padding-bottom: 20px;
+      color: var(--muted);
+    }
+
+    .faq-answer ol,
+    .faq-answer ul {
+      margin: 0;
+      padding-left: 1.35em;
+    }
+
+    .faq-answer li + li {
+      margin-top: 6px;
+    }
+
+    .privacy-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .privacy-item {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(4, 12, 8, 0.3);
+    }
+
+    .privacy-item p,
+    .privacy-item ul {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .privacy-item ul {
+      padding-left: 1.25em;
+    }
+
+    .policy-date {
+      color: var(--green);
+      font-size: 0.85rem;
+    }
+
+    .privacy-disclosure {
+      overflow: hidden;
+      border: 1px solid rgba(217, 187, 114, 0.48);
+      border-radius: 18px;
+      background: rgba(4, 12, 8, 0.3);
+    }
+
+    .privacy-disclosure > summary {
+      display: flex;
+      min-height: 58px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 20px;
+      color: var(--gold-light);
+      list-style: none;
+    }
+
+    .privacy-disclosure > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .privacy-disclosure > summary::after {
+      content: "＋";
+      flex: 0 0 auto;
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    .privacy-disclosure[open] > summary::after {
+      content: "−";
+    }
+
+    .privacy-body {
+      padding: 24px 20px 20px;
+      border-top: 1px solid var(--line);
+    }
+
+    .contact {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      align-items: center;
+      gap: 32px;
+      background: var(--paper-strong);
+    }
+
+    .contact-note {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.04);
+      font-size: 0.9rem;
+    }
+
+    .contact-note strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .contact-note ul {
+      margin: 0;
+      padding-left: 1.25em;
+    }
+
+    footer {
+      padding-block: 22px 36px;
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 0.82rem;
+      text-align: center;
+    }
+
+    @media (max-width: 780px) {
+      body {
+        background-attachment: scroll;
+      }
+
+      .site-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      nav {
+        justify-content: flex-start;
+      }
+
+      .hero {
+        min-height: 460px;
+      }
+
+      .card-grid,
+      .about-grid,
+      .privacy-grid,
+      .contact {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .site-header,
+      main,
+      footer {
+        width: min(calc(100% - 20px), var(--page-width));
+      }
+
+      .panel {
+        padding: 24px 19px;
+        border-radius: 18px;
+      }
+
+      h1 {
+        letter-spacing: 0.06em;
+      }
+
+      .release {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 18px;
+      }
+
+      .button-row,
+      .button {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .button {
+        transition: none;
+      }
+    }
+  </style>
 </head>
-<body style="font-family:sans-serif; padding:20px;">
-<h1>剣の道 零 サポート</h1>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top">剣の道 零</a>
+    <nav aria-label="ページ内メニュー">
+      <a href="#features">主な機能</a>
+      <a href="#about">このアプリについて</a>
+      <a href="#history">更新履歴</a>
+      <a href="#faq">FAQ</a>
+      <a href="#privacy">プライバシー</a>
+      <a href="#contact">お問い合わせ</a>
+    </nav>
+  </header>
 
-<p>
-数ある剣道アプリの中から「剣の道零」を選んでいただいて、本当にありがとうございます。<br>
-不具合・バグの連絡、意見・要望などがありましたら（心が折れない程度で）遠慮なく送信してください。
-</p>
-  
-<p>
-【背景】<br>
-このアプリは、仲の良い友達と一緒に剣道に励む少年剣士が、素振りや稽古を楽しく続けることができることを願って作ったものです。
-</p>
+  <main id="top">
+    <section class="panel hero" aria-labelledby="hero-title">
+      <p class="eyebrow">Kendo training companion</p>
+      <div class="version-badge">最新版 4.1</div>
+      <h1 id="hero-title">剣の道 零<span>すべての剣道家の、続ける力に。</span></h1>
+      <div class="hero-copy">
+        <p>数ある剣道アプリの中から<strong>「剣の道 零」</strong>を選んでいただき、本当にありがとうございます。</p>
+        <p>不具合・バグのご連絡や、ご意見・ご要望がありましたら、どうぞ遠慮なくお寄せください。</p>
+      </div>
+      <div class="button-row">
+        <a class="button" href="#contact">お問い合わせ</a>
+        <a class="button secondary" href="#history">更新履歴を見る</a>
+      </div>
+    </section>
 
-<p>
-【開発環境】<br>
-何度もテストを重ねて大丈夫なようにはしていますが、アプリ開発経験のない私が生成AIに相談しながら一人で作ったので、不備があるかもしれません。<br>
-（将来に向けて、アップルウォッチを使った素振りカウント機能も開発中です）<br>
-開発途中、先生から「試合結果や稽古結果で、先生からの助言も記録できるようにした方が良い」との貴重なアドバイスをいただいて「剣道日記」機能も載せています。
-</p>
+    <section class="panel" id="features" aria-labelledby="features-title">
+      <p class="eyebrow">Features</p>
+      <h2 id="features-title">稽古を、記録と成長につなげる</h2>
+      <p class="section-intro">毎日の素振りから稽古・試合の振り返りまで、剣道を楽しく続けるための機能をまとめています。</p>
 
-<p>
-【完全無料】<br>
-剣道は道具代や遠征で出費が嵩むので『永久完全無料』。素振りの集中や剣道への熱意を不要な広告で邪魔しなくないので『広告一切なし』。
-</p>
+      <div class="card-grid">
+        <article class="card">
+          <span class="card-number">01</span>
+          <h3>Apple Watchで素振りを自動計測</h3>
+          <p>正面素振りと跳躍素振りを自動で計測。判定感度や個人調整、音声、節目の振動などを自分に合わせて設定できます。</p>
+        </article>
+        <article class="card">
+          <span class="card-number">02</span>
+          <h3>剣道日記</h3>
+          <p>稽古内容や試合結果、振り返り、先生からの助言を記録。試合動画と打突の記録もまとめて残せます。</p>
+        </article>
+        <article class="card">
+          <span class="card-number">03</span>
+          <h3>試合・動画分析とバックアップ</h3>
+          <p>試合内容を振り返る分析機能と、動画を使った分析機能を搭載。大切な記録を守るバックアップにも対応しています。</p>
+        </article>
+        <article class="card">
+          <span class="card-number">04</span>
+          <h3>完全無料・広告なし</h3>
+          <p>剣道は道具代や遠征などで出費がかさむため、永久完全無料。稽古への集中を妨げないよう、広告も一切ありません。</p>
+        </article>
+      </div>
+    </section>
 
-<p>
-【願い】<br>
-すべての剣道家、特に、夢と希望を抱いて稽古に励む少年剣士達の上達の一助になればと心から願っています。
-</p>
+    <section class="panel" id="about" aria-labelledby="about-title">
+      <p class="eyebrow">About</p>
+      <h2 id="about-title">このアプリについて</h2>
+      <div class="about-grid">
+        <article>
+          <h3>背景</h3>
+          <p>仲の良い友達と一緒に剣道に励む少年剣士が、素振りや稽古を楽しく続けられることを願って作りました。</p>
+        </article>
+        <article>
+          <h3>開発について</h3>
+          <p>アプリ開発経験のなかった個人開発者が、生成AIにも相談しながら、テストと改善を重ねて制作しています。Apple Watchを使った素振りカウント機能も実装しました。</p>
+        </article>
+        <article>
+          <h3>願い</h3>
+          <p>すべての剣道家、特に夢と希望を抱いて稽古に励む少年剣士たちの上達の一助になればと、心から願っています。</p>
+        </article>
+      </div>
+    </section>
 
-<h2>お問い合わせ・不具合・バグなど</h2>
-<p>Email:<a href="mailto:shusosai@gmail.com">shusosai@gmail.com</a></p>
-  
+    <section class="panel" id="history" aria-labelledby="history-title">
+      <p class="eyebrow">Release notes</p>
+      <h2 id="history-title">更新履歴</h2>
+      <p class="section-intro">剣の道 零は、実際の稽古での使いやすさと、大切な記録を安心して残せることを重視して改善を続けています。</p>
 
-<p>© 2026 Chikayuki Yoshikawa</p>
+      <div class="release-list">
+        <article class="release latest">
+          <div class="release-version">Version 4.1<small>最新バージョン</small></div>
+          <div>
+            <h3>Apple Watchでの素振り自動計測に対応</h3>
+            <ul>
+              <li>Apple Watchで正面素振り／跳躍素振りを自動計測</li>
+              <li>判定感度、個人調整、診断ログ（CSV／JSON）に対応</li>
+              <li>ユーザー別設定、iPhoneへの送信、重複計上防止を実装</li>
+              <li>3種類の音声、音量、節目の振動、1日1,200本上限を実装</li>
+              <li>iPhoneの使い方ガイドとiPad非対応案内を追加</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="release">
+          <div class="release-version">Version 3.2</div>
+          <div>
+            <h3>軽量化</h3>
+            <ul>
+              <li>アプリ全体を軽量化</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="release">
+          <div class="release-version">Version 3.1</div>
+          <div>
+            <h3>分析・バックアップ機能を拡充</h3>
+            <ul>
+              <li>試合分析機能を実装</li>
+              <li>動画分析機能を実装</li>
+              <li>バックアップ機構を実装</li>
+              <li>UIを改善</li>
+              <li>夏バージョンアイコンを実装</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+
+      <details>
+        <summary>Version 1.1〜1.6の更新履歴を見る</summary>
+        <div class="release-list">
+          <article class="release">
+            <div class="release-version">Version 1.6</div>
+            <div>
+              <ul>
+                <li>剣道日記の不具合を改善</li>
+                <li>データ保存構造の実装により安全性を向上</li>
+              </ul>
+            </div>
+          </article>
+          <article class="release">
+            <div class="release-version">Version 1.5</div>
+            <div>
+              <ul>
+                <li>剣道日記に関する不具合を改善</li>
+              </ul>
+            </div>
+          </article>
+          <article class="release">
+            <div class="release-version">Version 1.4</div>
+            <div>
+              <ul>
+                <li>剣道日記のUIと試合保存に関する不具合を改善</li>
+              </ul>
+            </div>
+          </article>
+          <article class="release">
+            <div class="release-version">Version 1.3</div>
+            <div>
+              <ul>
+                <li>剣道日記の挙動を最適化</li>
+              </ul>
+            </div>
+          </article>
+          <article class="release">
+            <div class="release-version">Version 1.2</div>
+            <div>
+              <ul>
+                <li>設定内のヘルプ欄にサポートページへのリンクを実装</li>
+              </ul>
+            </div>
+          </article>
+          <article class="release">
+            <div class="release-version">Version 1.1</div>
+            <div>
+              <ul>
+                <li>日付をまたいだ際の挙動を改善（再起動から自然なリロードへ変更）</li>
+                <li>カレンダーからの本数入力を制限（当日・未来日の入力を禁止）</li>
+                <li>データの整合性を強化（0:00前後の不具合対策）</li>
+                <li>一部の英語表示を日本語へ修正</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </details>
+    </section>
+
+    <section class="panel" id="faq" aria-labelledby="faq-title">
+      <p class="eyebrow">Frequently asked questions</p>
+      <h2 id="faq-title">よくあるご質問</h2>
+      <p class="section-intro">Apple Watchでの計測やiPhoneへの送信で困ったときは、次の内容をご確認ください。</p>
+
+      <div class="faq-list">
+        <details open>
+          <summary>Apple Watchで素振りが計測されません</summary>
+          <div class="faq-answer">
+            <ol>
+              <li>iPhoneとペアリングしたApple Watchに「剣の道 零」がインストールされていることを確認します。</li>
+              <li>iPhone側で記録するユーザーを選び、Apple Watchに同じユーザー名が表示されていることを確認します。</li>
+              <li>Apple Watchを左手首に、文字盤が外側を向くように緩みなく装着します。</li>
+              <li>「正面素振り開始」または「跳躍素振り開始」から、行う素振りに合った計測を開始します。</li>
+              <li>判定感度を「やさしめ」に変更して、もう一度お試しください。</li>
+            </ol>
+          </div>
+        </details>
+
+        <details>
+          <summary>「やさしめ」でも計測されない場合はどうすればよいですか？</summary>
+          <div class="faq-answer">
+            <ol>
+              <li>Apple Watchの「設定・調整」から「診断計測」を開き、実際の素振りを20本行います。</li>
+              <li>iPhoneの「設定」＞「Apple Watch素振り計測」＞「記録を管理」を開きます。</li>
+              <li>記録の正解本数や装着時の状況を確認・入力します。</li>
+              <li>「CSVと計測情報を共有」からCSV／JSONを出力し、下記のお問い合わせ先へお送りください。</li>
+            </ol>
+            <p>いただいた記録は、判定状況の確認とアプリの改善に使用します。</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>計測した本数がiPhoneへ届きません</summary>
+          <div class="faq-answer">
+            <ul>
+              <li>Apple Watchで「終了して送信」を押してください。</li>
+              <li>「送信済み」と表示されるまで、iPhoneとApple Watchを近くに置いてください。</li>
+              <li>iPhone側で、Apple Watchに表示されているユーザーと同じユーザーが選ばれているか確認してください。</li>
+            </ul>
+          </div>
+        </details>
+
+        <details>
+          <summary>iPadでもApple Watchの素振り計測を利用できますか？</summary>
+          <div class="faq-answer">
+            <p>Apple Watchの素振り計測機能はiPhone向けです。iPadではご利用いただけません。</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="panel" id="privacy" aria-labelledby="privacy-title">
+      <p class="eyebrow">Privacy policy</p>
+      <h2 id="privacy-title">プライバシーポリシー</h2>
+      <p class="section-intro">内容を確認する場合は、下のボタンを押してください。</p>
+
+      <details class="privacy-disclosure">
+        <summary>プライバシーポリシーの内容を表示する</summary>
+        <div class="privacy-body">
+          <p class="policy-date">制定・最終更新：2026年8月2日</p>
+          <p class="section-intro">「剣の道 零」は、利用者の記録とプライバシーを大切に扱います。本アプリにおけるデータの保存、利用、共有について、以下のとおり定めます。</p>
+
+          <div class="privacy-grid">
+            <article class="privacy-item">
+              <h3>1. アプリ内で保存するデータ</h3>
+              <p>ユーザー名、目標本数、素振り記録、剣道日記、試合記録、動画の登録情報、各種設定などを、アプリの機能提供と記録の復元のために保存します。これらの情報は、原則として利用者の端末内および利用者自身のiCloud環境で管理されます。</p>
+            </article>
+
+            <article class="privacy-item">
+              <h3>2. iCloudの利用</h3>
+              <p>試合動画は利用者のiCloud Driveで管理されます。バックアップには記録・設定・動画の登録情報やメモが含まれますが、動画ファイル本体は含まれません。iCloudの取扱いには、利用者のApple ID設定および<a href="https://www.apple.com/jp/legal/privacy/" target="_blank" rel="noopener noreferrer">Appleのプライバシーポリシー</a>が適用されます。</p>
+            </article>
+
+            <article class="privacy-item">
+              <h3>3. Apple Watch診断ログ</h3>
+              <p>利用者が「診断計測」を実行した場合、素振り判定に用いるセンサー記録と、計測本数、装着状態、アプリのバージョンなどの情報をCSV／JSONとして端末内に保存します。診断ログが開発者へ自動送信されることはありません。</p>
+            </article>
+
+            <article class="privacy-item">
+              <h3>4. データの共有と利用目的</h3>
+              <p>診断ログやお問い合わせ内容は、利用者が共有操作またはメール送信を行った場合に限り、指定した送信先へ共有されます。開発者が受け取った情報は、お問い合わせへの回答、不具合の調査、計測判定およびアプリ品質の改善のためにのみ使用します。</p>
+            </article>
+
+            <article class="privacy-item">
+              <h3>5. トラッキング・広告・解析</h3>
+              <p>本アプリは、利用者を他社のアプリやWebサイトをまたいで追跡するトラッキングを行いません。広告、広告SDK、第三者の行動解析SDKも使用していません。アプリ内の記録や診断ログを広告目的で利用または販売することもありません。</p>
+            </article>
+
+            <article class="privacy-item">
+              <h3>6. 保存期間と削除</h3>
+              <p>アプリ内の記録は、利用者が削除するまで端末またはiCloudに保存されます。診断ログはiPhoneの「記録を管理」から個別に削除できます。iCloud上のデータは、アプリ内の各削除機能またはAppleが提供する管理方法から削除できます。</p>
+            </article>
+
+            <article class="privacy-item">
+              <h3>7. お問い合わせで受領した情報</h3>
+              <p>メールで受領した情報は、回答と不具合調査に必要な期間に限って保管し、利用目的を終えた後に削除します。受領した情報の削除をご希望の場合は、下記のお問い合わせ先へご連絡ください。</p>
+            </article>
+
+            <article class="privacy-item">
+              <h3>8. 方針の変更</h3>
+              <p>アプリの機能変更や必要に応じて、本方針を改定することがあります。重要な変更がある場合は、このページでお知らせします。</p>
+            </article>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="panel contact" id="contact" aria-labelledby="contact-title">
+      <div>
+        <p class="eyebrow">Support</p>
+        <h2 id="contact-title">お問い合わせ</h2>
+        <p>不具合・バグのご連絡、ご意見・ご要望をお待ちしています。</p>
+        <div class="button-row">
+          <a class="button" href="mailto:shusosai@gmail.com">メールを送る</a>
+        </div>
+      </div>
+      <aside class="contact-note">
+        <strong>不具合のご連絡に添えていただきたい情報</strong>
+        <ul>
+          <li>アプリのバージョン</li>
+          <li>お使いの端末とOS</li>
+          <li>発生した状況や手順</li>
+          <li>可能であれば画面の画像</li>
+        </ul>
+      </aside>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 Chikayuki Yoshikawa</p>
+  </footer>
 </body>
 </html>
