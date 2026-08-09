@@ -225,6 +225,10 @@
       color: var(--text);
     }
 
+    .hero-copy .keep-together {
+      white-space: nowrap;
+    }
+
     .button-row {
       display: flex;
       flex-wrap: wrap;
@@ -255,6 +259,25 @@
     .button.secondary {
       color: var(--text);
       background: transparent;
+    }
+
+    .button.disabled,
+    .button[aria-disabled="true"] {
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--line);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .store-links {
+      margin-top: 22px;
+    }
+
+    .store-note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.9rem;
     }
 
     .section-intro {
@@ -583,12 +606,17 @@
   <main id="top">
     <section class="panel hero" aria-labelledby="hero-title">
       <p class="eyebrow">Kendo training companion</p>
-      <div class="version-badge">最新版 4.1</div>
+      <div class="version-badge">最新版 5.1</div>
       <h1 id="hero-title">剣の道 零<span>すべての剣道家の、続ける力に。</span></h1>
       <div class="hero-copy">
-        <p>数ある剣道アプリの中から<strong>「剣の道 零」</strong>を選んでいただき、本当にありがとうございます。</p>
-        <p>不具合・バグのご連絡や、ご意見・ご要望がありましたら、どうぞ遠慮なくお寄せください。</p>
+        <p>数ある剣道アプリの中から<strong>「剣の道 零」</strong>を選んでいただき、<span class="keep-together">本当にありがとうございます。</span></p>
+        <p>不具合・バグのご連絡や、ご意見・ご要望がありましたら、<span class="keep-together">どうぞ遠慮なくお寄せください。</span></p>
       </div>
+      <div class="button-row store-links" aria-label="アプリのダウンロード">
+        <a class="button" href="https://apps.apple.com/jp/app/%E5%89%A3%E3%81%AE%E9%81%93-%E9%9B%B6/id6760252980" target="_blank" rel="noopener noreferrer" aria-label="App Storeで剣の道 零をダウンロード">App Storeでダウンロード</a>
+        <span class="button disabled" role="link" aria-disabled="true">Google Play（準備中）</span>
+      </div>
+      <p class="store-note">Google Play版は現在準備中です。公開の準備が整い次第、このページでご案内します。</p>
       <div class="button-row">
         <a class="button" href="#contact">お問い合わせ</a>
         <a class="button secondary" href="#history">更新履歴を見る</a>
@@ -650,7 +678,21 @@
 
       <div class="release-list">
         <article class="release latest">
-          <div class="release-version">Version 4.1<small>最新バージョン</small></div>
+          <div class="release-version">Version 5.1<small>最新バージョン</small></div>
+          <div>
+            <h3>iPhoneとiPadのiCloud同期に対応</h3>
+            <ul>
+              <li>同じApple AccountのiPhoneとiPadで、記録や設定を自動同期</li>
+              <li>初回同期時に、各端末に保存されていた既存データを安全に統合</li>
+              <li>稽古日記の入力途中の下書きも端末間で同期</li>
+              <li>クラウドデータのJSON／CSV書き出しと全削除機能を追加</li>
+              <li>Apple Watch素振り計測との連携と同期の安定性を改善</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="release">
+          <div class="release-version">Version 4.1</div>
           <div>
             <h3>Apple Watchでの素振り自動計測に対応</h3>
             <ul>
@@ -802,53 +844,73 @@
     <section class="panel" id="privacy" aria-labelledby="privacy-title">
       <p class="eyebrow">Privacy policy</p>
       <h2 id="privacy-title">プライバシーポリシー</h2>
-      <p class="section-intro">内容を確認する場合は、下のボタンを押してください。</p>
+      <p class="section-intro">「剣の道 零」が取り扱うデータ、iCloud同期、利用者自身による書き出し・削除についてご案内します。</p>
 
-      <details class="privacy-disclosure">
+      <details class="privacy-disclosure" open>
         <summary>プライバシーポリシーの内容を表示する</summary>
         <div class="privacy-body">
-          <p class="policy-date">制定・最終更新：2026年8月2日</p>
-          <p class="section-intro">「剣の道 零」は、利用者の記録とプライバシーを大切に扱います。本アプリにおけるデータの保存、利用、共有について、以下のとおり定めます。</p>
+          <p class="policy-date">制定：2026年8月2日／最終更新：2026年8月9日</p>
+          <p class="section-intro">「剣の道 零」（以下「本アプリ」）の開発者は、利用者のプライバシーを尊重し、本アプリで取り扱うデータを以下の方針に従って管理します。</p>
 
           <div class="privacy-grid">
             <article class="privacy-item">
-              <h3>1. アプリ内で保存するデータ</h3>
-              <p>ユーザー名、目標本数、素振り記録、剣道日記、試合記録、動画の登録情報、各種設定などを、アプリの機能提供と記録の復元のために保存します。これらの情報は、原則として利用者の端末内および利用者自身のiCloud環境で管理されます。</p>
+              <h3>1. 取り扱うデータ</h3>
+              <p>プロフィール名とアプリ内識別子、稽古日・本数・目標・実績、Apple Watchの素振り計測結果、稽古日記と下書き、試合・技・有効打突の記録と自由記述、アプリ設定、利用者が登録した試合動画と登録情報を取り扱います。</p>
             </article>
 
             <article class="privacy-item">
-              <h3>2. iCloudの利用</h3>
-              <p>試合動画は利用者のiCloud Driveで管理されます。バックアップには記録・設定・動画の登録情報やメモが含まれますが、動画ファイル本体は含まれません。iCloudの取扱いには、利用者のApple ID設定および<a href="https://www.apple.com/jp/legal/privacy/" target="_blank" rel="noopener noreferrer">Appleのプライバシーポリシー</a>が適用されます。</p>
+              <h3>2. 利用目的</h3>
+              <p>記録・表示・バックアップ、同じApple Accountで利用するiPhoneとiPad間の同期、iPhoneとApple Watch間の機能連携、利用者自身によるデータの書き出し・削除のためにのみ使用します。</p>
             </article>
 
             <article class="privacy-item">
-              <h3>3. Apple Watch診断ログ</h3>
-              <p>利用者が「診断計測」を実行した場合、素振り判定に用いるセンサー記録と、計測本数、装着状態、アプリのバージョンなどの情報をCSV／JSONとして端末内に保存します。診断ログが開発者へ自動送信されることはありません。</p>
+              <h3>3. CloudKitによる同期</h3>
+              <p>プロフィール、稽古記録、本数、日記、下書き、設定などは端末内に保存され、同期を利用できる場合はAppleが提供するCloudKitのprivate databaseに保存されます。同じApple Accountの端末間でのみ同期し、他の利用者には公開されません。</p>
             </article>
 
             <article class="privacy-item">
-              <h3>4. データの共有と利用目的</h3>
-              <p>診断ログやお問い合わせ内容は、利用者が共有操作またはメール送信を行った場合に限り、指定した送信先へ共有されます。開発者が受け取った情報は、お問い合わせへの回答、不具合の調査、計測判定およびアプリ品質の改善のためにのみ使用します。</p>
+              <h3>4. 動画とApple Watch診断ログ</h3>
+              <p>試合動画は端末内の一時領域または本アプリ用iCloud Drive領域に保存されます。利用者が診断計測を実行した場合の生のモーションCSVと付随情報はApple Watchから利用者のiPhoneへ転送して端末内に保存し、CloudKitでは同期しません。</p>
             </article>
 
             <article class="privacy-item">
-              <h3>5. トラッキング・広告・解析</h3>
-              <p>本アプリは、利用者を他社のアプリやWebサイトをまたいで追跡するトラッキングを行いません。広告、広告SDK、第三者の行動解析SDKも使用していません。アプリ内の記録や診断ログを広告目的で利用または販売することもありません。</p>
+              <h3>5. 広告・追跡・第三者提供</h3>
+              <p>利用者データを広告、広告効果測定、異なる事業者のアプリやWebサイトをまたぐ追跡に使用しません。利用者データを販売せず、広告事業者へ提供しません。広告SDKおよび第三者の行動解析SDKも使用していません。</p>
+            </article>
+
+            <article class="privacy-item" id="data-management">
+              <h3>6. データの確認と書き出し</h3>
+              <p>本アプリの「設定」→「iCloudデータ管理」→「クラウドデータを書き出す」から、CloudKitで同期するデータをCSVとJSONで書き出せます。試合動画本体はiCloud Driveで管理されるため含まれません。Watch診断ログはiPhoneのApple Watch素振り計測画面から個別に書き出せます。</p>
             </article>
 
             <article class="privacy-item">
-              <h3>6. 保存期間と削除</h3>
-              <p>アプリ内の記録は、利用者が削除するまで端末またはiCloudに保存されます。診断ログはiPhoneの「記録を管理」から個別に削除できます。iCloud上のデータは、アプリ内の各削除機能またはAppleが提供する管理方法から削除できます。</p>
+              <h3>7. データの削除</h3>
+              <p>「設定」→「iCloudデータ管理」→「iCloudと端末の全データを削除」から、CloudKit同期データ、接続するiPhone・iPadの本アプリデータとバックアップ、このiPhone内のWatch診断ログ、本アプリがiCloud Driveへ保存した試合動画を削除できます。誤操作防止のため二段階確認と「削除」の文字入力が必要です。</p>
             </article>
 
             <article class="privacy-item">
-              <h3>7. お問い合わせで受領した情報</h3>
-              <p>メールで受領した情報は、回答と不具合調査に必要な期間に限って保管し、利用目的を終えた後に削除します。受領した情報の削除をご希望の場合は、下記のお問い合わせ先へご連絡ください。</p>
+              <h3>8. オフライン端末と削除通知</h3>
+              <p>オフラインのiPhone・iPadが古い同期データを再登録しないよう、削除日時とランダムな処理識別子だけを含む削除通知をCloudKitに保持します。この通知に氏名、日記、本数、動画その他の利用者コンテンツは含まれません。オフライン端末では次回接続時に削除が適用されます。</p>
             </article>
 
             <article class="privacy-item">
-              <h3>8. 方針の変更</h3>
-              <p>アプリの機能変更や必要に応じて、本方針を改定することがあります。重要な変更がある場合は、このページでお知らせします。</p>
+              <h3>9. 保存期間と安全管理</h3>
+              <p>利用者が削除するまで保存します。同期不能などで削除処理が完了しなかった場合は次回接続時に再試行します。CloudKit、iCloud Drive、アプリの保護領域およびOSの通信保護を利用します。</p>
+            </article>
+
+            <article class="privacy-item">
+              <h3>10. Appleのサービス</h3>
+              <p>CloudKitおよびiCloud Driveでの処理には、利用者のApple Account設定と<a href="https://www.apple.com/jp/legal/privacy/" target="_blank" rel="noopener noreferrer">Appleのプライバシーポリシー</a>が適用されます。本アプリはApple Accountのメールアドレスやパスワード、連絡先、正確な位置情報、支払情報を取得しません。</p>
+            </article>
+
+            <article class="privacy-item">
+              <h3>11. お問い合わせで受領した情報</h3>
+              <p>利用者がメール送信や共有操作を行った場合に限り、指定した送信先へ情報が共有されます。開発者が受け取った情報は、回答、不具合調査、計測判定と品質改善に必要な期間だけ保管し、利用目的を終えた後に削除します。</p>
+            </article>
+
+            <article class="privacy-item">
+              <h3>12. 方針の変更・お問い合わせ</h3>
+              <p>機能やプラットフォーム要件の変更に応じて本方針を改定することがあります。重要な変更はこのページでお知らせします。本方針やデータ取扱いに関するお問い合わせは、下記のお問い合わせ先からお願いします。</p>
             </article>
           </div>
         </div>
