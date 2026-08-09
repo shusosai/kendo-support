@@ -30,11 +30,21 @@
     }
 
     body {
+      position: relative;
+      z-index: 0;
       min-height: 100vh;
       margin: 0;
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic UI", sans-serif;
       line-height: 1.8;
+      background: #09130f;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      z-index: -1;
+      inset: 0;
       background-color: #09130f;
       background-image:
         linear-gradient(180deg, rgba(3, 8, 5, 0.16), rgba(3, 8, 5, 0.44)),
@@ -42,7 +52,7 @@
       background-position: left top;
       background-size: cover;
       background-repeat: no-repeat;
-      background-attachment: fixed;
+      pointer-events: none;
     }
 
     a {
@@ -526,10 +536,6 @@
     }
 
     @media (max-width: 780px) {
-      body {
-        background-attachment: scroll;
-      }
-
       .site-header {
         align-items: flex-start;
         flex-direction: column;
@@ -576,6 +582,17 @@
       .button-row,
       .button {
         width: 100%;
+      }
+    }
+
+    @media (max-width: 600px) and (orientation: portrait) {
+      body::before {
+        background-image:
+          linear-gradient(180deg, rgba(3, 8, 5, 0.12) 0, rgba(3, 8, 5, 0.3) 420px, rgba(3, 8, 5, 0.9) 720px, #09130f 1000px),
+          url("iphone-support-background.jpg");
+        background-position: center top, center top;
+        background-size: 100% 100%, 100% auto;
+        background-repeat: no-repeat, no-repeat;
       }
     }
 
