@@ -557,11 +557,18 @@
 
     .visitor-counter p {
       display: flex;
+      flex-wrap: wrap;
       align-items: baseline;
-      gap: 8px;
+      justify-content: center;
+      gap: 4px 8px;
       margin: 0;
       color: rgba(255, 255, 255, 0.55);
       font-size: 0.8rem;
+    }
+
+    .visitor-counter .visitor-since {
+      color: rgba(255, 255, 255, 0.42);
+      font-size: 0.72rem;
     }
 
     .visitor-counter .visitor-number {
@@ -1210,7 +1217,7 @@
 
   <footer>
     <section class="visitor-counter" id="visitor-counter" aria-label="訪問者数" hidden>
-      <p>今まで訪れた剣士達<span class="visitor-number" id="visitor-total">&mdash;</span>人</p>
+      <p>今まで訪れた剣士達<span class="visitor-number" id="visitor-total">&mdash;</span>人<span class="visitor-since">（令和8年9月12日以降の剣士の数です）</span></p>
       <p>今日訪れた剣士達<span class="visitor-number" id="visitor-today">&mdash;</span>人</p>
     </section>
     <p class="trademark-note">マンダラチャート&reg;は一般社団法人マンダラチャート協会の登録商標です。一般社団法人マンダラチャート協会のご協力を得て使用しています。</p>
