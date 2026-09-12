@@ -543,6 +543,36 @@
       line-height: 1.7;
     }
 
+    .visitor-counter {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px 32px;
+      max-width: 44em;
+      margin: 0 auto 18px;
+      padding-block: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .visitor-counter p {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 0.8rem;
+    }
+
+    .visitor-counter .visitor-number {
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.85);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.02em;
+    }
+
     @media (max-width: 780px) {
       .site-header {
         align-items: flex-start;
@@ -1115,6 +1145,7 @@
             <article class="privacy-item">
               <h3>7. 広告・追跡・第三者提供</h3>
               <p>利用者データを広告、広告効果測定、異なる事業者のアプリやWebサイトをまたぐ追跡に使用しません。利用者データを販売せず、広告事業者へ提供しません。広告SDKおよび第三者の行動解析SDKも使用していません。</p>
+              <p>このサポートページ（本ページ）では、訪れた方の人数をおおよその数として数え、ページ下部に表示しています。数えているのは人数だけで、IPアドレス、Cookie、閲覧の履歴、端末を見分けるための情報は取得も保存もしていません。同じ方を重ねて数えないための記録は、お使いのブラウザの中だけに保存され、外部へ送信されません。この数はアプリの機能とは無関係で、アプリ内のデータとも結び付きません。</p>
             </article>
 
             <article class="privacy-item" id="data-management">
@@ -1178,8 +1209,72 @@
   </main>
 
   <footer>
+    <section class="visitor-counter" id="visitor-counter" aria-label="訪問者数" hidden>
+      <p>今まで訪れた剣士達<span class="visitor-number" id="visitor-total">&mdash;</span>人</p>
+      <p>今日訪れた剣士達<span class="visitor-number" id="visitor-today">&mdash;</span>人</p>
+    </section>
     <p class="trademark-note">マンダラチャート&reg;は一般社団法人マンダラチャート協会の登録商標です。一般社団法人マンダラチャート協会のご協力を得て使用しています。</p>
     <p>© 2026 Chikayuki Yoshikawa</p>
   </footer>
+  <script>
+    /*
+      訪問者数の表示。
+      同じ人を二重に数えないための記録は、この端末のブラウザの中だけに置く。
+      サーバーへ送るのは「初めてかどうか」だけで、誰であるかは送らない。
+      数字を取得できないときは、何も表示しない（エラーも見せない）。
+    */
+    (function () {
+      var ENDPOINT = ""; // 例: https://kendo-support-counter.example.workers.dev
+      var box = document.getElementById("visitor-counter");
+      if (!ENDPOINT || !box) return;
+
+      var KEY_EVER = "kendo-support.visited";
+      var KEY_DAY = "kendo-support.visited-on";
+      var today = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit"
+      }).format(new Date());
+
+      var store = null;
+      try {
+        store = window.localStorage;
+        store.setItem(KEY_DAY + ".test", "1");
+        store.removeItem(KEY_DAY + ".test");
+      } catch (e) {
+        store = null; // 使えない場合は数を増やさず、表示だけ行う
+      }
+
+      var kind = "none";
+      if (store) {
+        if (store.getItem(KEY_EVER) !== "1") {
+          kind = "both";
+        } else if (store.getItem(KEY_DAY) !== today) {
+          kind = "day";
+        }
+      }
+
+      var options = kind === "none"
+        ? { method: "GET" }
+        : { method: "POST", body: kind, headers: { "Content-Type": "text/plain" } };
+
+      fetch(ENDPOINT, options)
+        .then(function (response) {
+          if (!response.ok) throw new Error("counter unavailable");
+          return response.json();
+        })
+        .then(function (data) {
+          if (typeof data.total !== "number" || typeof data.today !== "number") return;
+          document.getElementById("visitor-total").textContent = data.total.toLocaleString("ja-JP");
+          document.getElementById("visitor-today").textContent = data.today.toLocaleString("ja-JP");
+          box.hidden = false;
+          if (store) {
+            try {
+              store.setItem(KEY_EVER, "1");
+              store.setItem(KEY_DAY, today);
+            } catch (e) { /* 保存できなくても表示は続ける */ }
+          }
+        })
+        .catch(function () { /* 取得できないときは表示しない */ });
+    })();
+  </script>
 </body>
 </html>
