@@ -1235,8 +1235,9 @@
       var box = document.getElementById("visitor-counter");
       if (!ENDPOINT || !box) return;
 
-      var KEY_EVER = "kendo-support.visited";
-      var KEY_DAY = "kendo-support.visited-on";
+      // 数え直したときは、末尾の日付を変える。すべてのブラウザが改めて1回数えられる。
+      var KEY_EVER = "kendo-support.visited.20260912";
+      var KEY_DAY = "kendo-support.visited-on.20260912";
       var today = new Intl.DateTimeFormat("en-CA", {
         timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit"
       }).format(new Date());
