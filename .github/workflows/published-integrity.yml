@@ -35,6 +35,8 @@ jobs:
               "${PUBLIC}?audit=${stamp}" \
               -o "$RUNNER_TEMP/public.html"; then
 
+              # TEST ONLY: runner内の一時コピーだけを変える。mainへマージしない。
+              printf '\n<!-- intentional integrity notification test -->\n' >> "$RUNNER_TEMP/public.html"
               main_hash=$(sha256sum "$RUNNER_TEMP/main.html" | cut -d' ' -f1)
               public_hash=$(sha256sum "$RUNNER_TEMP/public.html" | cut -d' ' -f1)
 
