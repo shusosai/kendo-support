@@ -1,5 +1,5 @@
 
-name: Published Page Integrity Monitor
+name: 公開サポートページの整合性監視
 
 on:
   schedule:
@@ -11,11 +11,12 @@ permissions:
 
 jobs:
   compare-html:
+    name: 公開HTMLとmainの一致確認
     runs-on: ubuntu-latest
     timeout-minutes: 8
 
     steps:
-      - name: Compare published HTML with main
+      - name: 公開HTMLとmainのSHA-256を比較
         shell: bash
         run: |
           set -euo pipefail
@@ -40,11 +41,11 @@ jobs:
               main_hash=$(sha256sum "$RUNNER_TEMP/main.html" | cut -d' ' -f1)
               public_hash=$(sha256sum "$RUNNER_TEMP/public.html" | cut -d' ' -f1)
 
-              echo "GitHub main: $main_hash"
-              echo "Public page: $public_hash"
+              echo "GitHub mainのSHA-256: $main_hash"
+              echo "公開ページのSHA-256: $public_hash"
 
               if [ "$main_hash" = "$public_hash" ]; then
-                echo "PASS: Published HTML matches main."
+                echo "正常: 公開HTMLとmainが一致しています。"
                 exit 0
               fi
             fi
@@ -54,5 +55,5 @@ jobs:
             fi
           done
 
-          echo "::error::Published page integrity check failed."
+          echo "::error::公開ページの整合性を確認できませんでした。不一致または通信障害の可能性があります。実行ログを確認してください。"
           exit 1
