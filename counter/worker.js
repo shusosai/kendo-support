@@ -31,6 +31,13 @@ export default {
       return new Response("Method Not Allowed", { status: 405, headers });
     }
 
+    // CORSの応答制限だけでは、別サイトからの単純なPOSTの書き込みを防げない。
+    // 本文の読み取り・KVへのアクセスより前に、書き込み元のOriginを確認する。
+    if (request.method === "POST" &&
+        request.headers.get("Origin") !== ALLOWED_ORIGIN) {
+      return new Response("Forbidden", { status: 403, headers });
+    }
+
     const dayKey = `day:${tokyoDate(new Date())}`;
 
     if (request.method === "POST") {
