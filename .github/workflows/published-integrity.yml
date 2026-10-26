@@ -24,6 +24,7 @@ jobs:
 
           MAIN="https://raw.githubusercontent.com/shusosai/kendo-support/main/index.html"
           PUBLIC="https://shusosai.github.io/kendo-support/"
+          last_result="unknown"
 
           for attempt in 1 2 3; do
             stamp="$(date +%s)-$attempt"
@@ -42,11 +43,16 @@ jobs:
 
               echo "GitHub mainのSHA-256: $main_hash"
               echo "公開ページのSHA-256: $public_hash"
+              last_result="mismatch"
 
               if [ "$main_hash" = "$public_hash" ]; then
                 echo "正常: 公開HTMLとmainが一致しています。"
+                echo '## 点検結果：正常' >> "$GITHUB_STEP_SUMMARY"
+                echo '公開ページのHTMLはGitHubのmainと一致しています。対応は不要です。' >> "$GITHUB_STEP_SUMMARY"
                 exit 0
               fi
+            else
+              last_result="fetch_failed"
             fi
 
             if [ "$attempt" -lt 3 ]; then
@@ -54,5 +60,41 @@ jobs:
             fi
           done
 
-          echo "::error::公開ページの整合性を確認できませんでした。不一致または通信障害の可能性があります。実行ログを確認してください。"
+          if [ "$last_result" = "mismatch" ]; then
+            diagnosis='最後の比較で、公開ページのHTMLとGitHubのmainの内容が一致しませんでした。直近の変更と公開処理の完了状況を確認してください。'
+          else
+            diagnosis='最後の試行で、公開ページまたはGitHubのHTMLを取得できませんでした。通信障害やサービス障害の可能性があります。両方のページを開けるか確認してください。'
+          fi
+          echo "::error::$diagnosis"
+          echo '## 点検結果：確認が必要です' >> "$GITHUB_STEP_SUMMARY"
+          printf '%s\n' "$diagnosis" >> "$GITHUB_STEP_SUMMARY"
+          exit 1
+
+  failure-notice:
+    needs: compare-html
+    if: ${{ failure() && needs['compare-html'].result == 'failure' }}
+    name: ${{ needs['compare-html'].result == 'failure' && '【要確認】定期点検で異常を検知しました。メールの緑のボタンから原因と対応を確認してください' || '異常なし（案内不要）' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - name: 異常の説明と確認手順を表示
+        shell: bash
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'MARKDOWN'
+          ## 【要確認】公開ページの定期点検で異常を検知しました
+
+          公開ページの内容がGitHubのmainと一致するかを定期的にチェックするプログラムが、点検を正常に完了できませんでした。
+          **内容の不一致、ページの取得失敗、または点検処理自体のエラーです。改ざんが確定したという意味ではありません。**
+
+          ### 次の順に確認してください
+
+          1. この画面の「点検結果：確認が必要です」を読み、内容の不一致か、取得失敗かを確認してください。
+          2. **内容が一致しない場合**：[公開ページ](https://shusosai.github.io/kendo-support/)の表示、[mainの最近の変更](https://github.com/shusosai/kendo-support/commits/main)、[公開処理の実行状況](https://github.com/shusosai/kendo-support/actions)を確認してください。
+          3. **取得できない場合**：上の公開ページとGitHubのリンクを開けるか確認してください。通信が戻った後に、この点検を1回再実行してください。
+          4. **結果の説明がない場合、または原因が分からない場合**：左の「公開HTMLとmainの一致確認」を開き、赤い×の付いた段階をクリックしてください。その実行画面のURLとエラー表示を確認の担当者に共有してください。
+
+          身に覚えのない変更や不一致が続く場合は、エラーを消すために検査を無効化したり、正常の基準を書き換えたりしないでください。
+          MARKDOWN
+          echo '::error::定期点検で異常を検知しました。この実行のSummary（概要）にある日本語の確認手順に従ってください。'
+          # 比較の失敗を成功扱いにせず、通知メールにこの案内を表示する。
           exit 1
