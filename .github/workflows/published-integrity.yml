@@ -1,0 +1,56 @@
+
+name: Published Page Integrity Monitor
+
+on:
+  schedule:
+    - cron: '17 0,6,12,18 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compare-html:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - name: Compare published HTML with main
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          MAIN="https://raw.githubusercontent.com/shusosai/kendo-support/main/index.html"
+          PUBLIC="https://shusosai.github.io/kendo-support/"
+
+          for attempt in 1 2 3; do
+            stamp="$(date +%s)-$attempt"
+
+            if curl -fsSL --retry 3 --retry-delay 3 \
+              -H "Cache-Control: no-cache" \
+              "${MAIN}?audit=${stamp}" \
+              -o "$RUNNER_TEMP/main.html" \
+              && curl -fsSL --retry 3 --retry-delay 3 \
+              -H "Cache-Control: no-cache" \
+              "${PUBLIC}?audit=${stamp}" \
+              -o "$RUNNER_TEMP/public.html"; then
+
+              main_hash=$(sha256sum "$RUNNER_TEMP/main.html" | cut -d' ' -f1)
+              public_hash=$(sha256sum "$RUNNER_TEMP/public.html" | cut -d' ' -f1)
+
+              echo "GitHub main: $main_hash"
+              echo "Public page: $public_hash"
+
+              if [ "$main_hash" = "$public_hash" ]; then
+                echo "PASS: Published HTML matches main."
+                exit 0
+              fi
+            fi
+
+            if [ "$attempt" -lt 3 ]; then
+              sleep 60
+            fi
+          done
+
+          echo "::error::Published page integrity check failed."
+          exit 1
