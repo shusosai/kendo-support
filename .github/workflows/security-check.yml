@@ -22,3 +22,6 @@ jobs:
 
       - name: Run security checks
         run: sh tools/check-site.sh
+
+      - name: Check CSP hashes and resource restrictions
+        run: node tools/check-csp.mjs
