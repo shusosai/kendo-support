@@ -73,7 +73,7 @@ jobs:
   failure-notice:
     needs: compare-html
     if: ${{ failure() && needs['compare-html'].result == 'failure' }}
-    name: 【異常検知時の確認案内】メールの緑のボタンで原因と対応を確認してください
+    name: 【異常検知時】緑のボタンで原因と確認手順をご覧ください
     runs-on: ubuntu-latest
     timeout-minutes: 1
     steps:
