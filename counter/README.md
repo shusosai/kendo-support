@@ -149,3 +149,30 @@ GET確認: HTTP状態、total/todayが数値であること
 
 ロールバックは、CloudflareのDeploymentsで控えた以前のバージョンへ戻す操作です。
 実行前に承認を得て、戻したVersion IDと日時を記録します。Workerの切り戻しはKVの値を戻しません。
+
+
+### 2026-10-27：POST Origin検査の本番反映（PR #17）
+
+| 項目 | 記録 |
+|---|---|
+| Worker名 | `kendo-support-counter` |
+| デプロイ日（日本時間） | 2026-10-27。22:28の動作確認より前に反映。Cloudflareの秒単位の日時は未取得 |
+| 承認 | 管理者から「16,17,18の順で導入」「最新mainを取り込み、検査をやり直してから反映」の承認を受けて実施 |
+| 対応するGitコミットID | PR #17をマージした `9e736fce9b0ed58d21b551b1f4c717b2fb7d8dc4` |
+| ソース | `counter/worker.js`、UTF-8/LF、3,284バイト |
+| SHA-256 | `2aff5434058984d35de827161ae1624ec666f2d27242633913dd71b1a5a48209` |
+| デプロイ方法 | Cloudflare DashboardのEdit code（Quick Editor）からDeploy |
+| Cloudflare Version ID | `f3c1d466-bc51-463b-867a-a51f742f80fc` |
+| Cloudflare Deployment ID | 未取得（Version IDとは区別） |
+| 稼働確認 | Active、トラフィック100%。2026-10-28の再開時にも確認 |
+| KV接続 | `COUNTER` → `kendo-support-counter`。変更なし |
+| 実稼働コードの照合 | デプロイ後にエディターを再読み込みし、Active/Latestの全ソースをコピー。LFで保存したファイルとGitHubソースのバイト列・SHA-256が一致。配布パッケージそのものをAPI取得した確認ではない |
+| GET・OPTIONS | 本番GETは200、数値のtotal/today、許可OriginのCORS・no-storeを確認。OPTIONSは204 |
+| 正常POST | 許可Originでbody=`none`は200、試験前後のカウントは不変。`both`・`day`による加算はメモリー内KVを使う自動テストで確認。2026-10-28に公開ページを通常閲覧し、カウンターの数値表示も確認 |
+| 拒否POST | 想定外OriginおよびOriginなしは本番で403。body=`none`を使用して試験による加算を回避 |
+| 自動テスト | 最新mainを取り込んだPR #17で17ケース成功。必須security-checkも成功後にマージ |
+| 切り戻し先 | 以前のVersion ID `32b199ae-250b-45ae-8332-201e52dbed7b`。切り戻してもKVの値は戻らない |
+| 未確認事項 | 秒単位のデプロイ時刻、Deployment ID、Cloudflareプラットフォーム側ログの内容・保持期間 |
+
+この検査は想定外のブラウザーOriginからのPOSTを拒否します。ブラウザー以外のクライアントではOriginを偽装できるため、認証や厳密な不正加算防止にはなりません。
+許可は `https://shusosai.github.io` 単位であり、同じOriginの別パスとの区別はしません。GETと既存CORS応答は維持しています。
