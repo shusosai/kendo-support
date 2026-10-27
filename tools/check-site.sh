@@ -60,8 +60,8 @@ fi
 [ "$ACTUAL_SHA" = "$SCRIPT_SHA" ] ||
   fail "inline script has changed"
 
-# 5. 訪問者カウンターの通信先を確認
-[ "$(grep -Fo "$ENDPOINT" "$HTML" | wc -l | tr -d ' ')" = 1 ] ||
+# 5. 訪問者カウンターの通信先を確認（CSPの許可先表記は別途check-csp.mjsで検査）
+[ "$(grep -Fo "$ENDPOINT" "$TMP/script" | wc -l | tr -d ' ')" = 1 ] ||
   fail "counter endpoint changed or duplicated"
 
 # 6. CSSの背景画像を確認
@@ -79,7 +79,7 @@ grep -Fq 'url("iphone-support-background.jpg")' "$HTML" ||
 find . -path './.git' -prune -o -type f -print |
 while IFS= read -r path; do
   case "$path" in
-    ./.DS_Store|*/.DS_Store|./.gitignore|./index.html|./iphone-support-background.jpg|./画像.png|./counter/README.md|./counter/worker.js|./counter/worker.test.mjs|./tools/check-site.sh|./tools/allowed-links.txt|./.github/workflows/security-check.yml|./.github/workflows/published-integrity.yml)
+    ./.DS_Store|*/.DS_Store|./.gitignore|./index.html|./iphone-support-background.jpg|./画像.png|./counter/README.md|./counter/worker.js|./counter/worker.test.mjs|./tools/check-site.sh|./tools/check-csp.mjs|./tools/allowed-links.txt|./.github/workflows/security-check.yml|./.github/workflows/published-integrity.yml)
       ;;
     *)
       printf 'ERROR: unexpected file: %s\n' "$path" >&2

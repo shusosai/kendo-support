@@ -25,3 +25,6 @@ jobs:
 
       - name: Run counter origin tests
         run: node --test counter/worker.test.mjs
+
+      - name: Check CSP hashes and resource restrictions
+        run: node tools/check-csp.mjs
